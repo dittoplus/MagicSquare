@@ -1,0 +1,53 @@
+# MagicSquare_1004 — Cursor Rules (초안)
+
+## 프로젝트
+4×4 부분 마방진(MagicSquare_1004). 단일 기준: `docs/PRD.md`, 문제 정의: `Report/01`, `Report/02`.
+Python + pytest, ECB + Dual-Track TDD.
+
+## 도메인 (불변)
+- 격자: 4×4 고정. 값은 `0`(빈칸) 또는 `1..16`. 빈칸은 **정확히 2개**.
+- 완성 판정: 10개 선(4행+4열+주대각+부대각) 합이 모두 **마방진 상수 34**.
+- 해 출력: `int[6]` — `[r1, c1, n1, r2, c2, n2]`. 좌표는 **1-index** (행·열 1..4).
+- 오류 코드 **E001~E007**: Boundary 전담(입력 계약·응답 `code`/`message`).
+- **Entity 금지**: E001~E005 처리·반환·매핑 금지. Entity는 순수 도메인 로직만.
+
+## 아키텍처 (ECB)
+- 호출 방향: **Boundary → Control → Entity** (단방향).
+- **Entity**: `boundary`, `control` 및 상위 레이어 import **금지**. 외부 I/O·HTTP·DB 없음.
+- **Control**: Entity 조합·흐름. Boundary/Entity 경계에서 역할 분리 유지.
+- **Boundary**: 입력 검증(FR-01), E001~E007, 무효 입력 시 Control/Entity **미호출**.
+
+## Dual-Track TDD
+| Track | Layer | Mock |
+|-------|-------|------|
+| **Logic** | entity, control | Domain/Entity **Mock 금지** — 실구현만 검증 |
+| **UI** | boundary | Boundary Mock **허용** (Control/Entity 스텁 가능) |
+
+테스트 배치: `tests/entity`, `tests/control`, `tests/boundary` — 레이어와 1:1.
+
+## 테스트 ID · 파일명
+- **Logic (Domain)**: ID `D-*` (예: `D-04-01`), 파일 `test_d_*.py`
+- **UI (Boundary)**: ID `U-*`, 파일 `test_u_*.py`
+- PRD AC·Report 추적성 유지. 한 테스트 = 한 ID.
+
+## TDD 규칙
+- 순서: **RED → GREEN → REFACTOR**. Phase 건너뛰기 금지.
+- RED에서 통과시키기 위해 **assert 완화·`skip`·`xfail` 금지**.
+- Behavior 변경 없는 REFACTOR만 허용; 리팩터 후 전 테스트 green 유지.
+
+## MagicConstant (SSOT)
+- `34`, `16`, `4`(격자 크기) 등 마방진 상수는 **단일 모듈**(예: `entity/constants.py`)에서만 정의.
+- 소스·테스트 전역에 `34`/`16` **리터럴 산재 금지** — 상수 import 사용.
+
+## AI 행동
+- **한국어**로 응답.
+- TDD 작업 시 매 턴 선언: **Phase**(RED/GREEN/REFACTOR) · **Layer**(entity/control/boundary) · **Track**(Logic/UI).
+- 요청 범위 밖 파일·기능 추가 금지. 최소 diff.
+- **`git commit` / push / PR**: 사용자가 **명시 요청할 때만**. 자동 커밋 금지.
+- Harness·문서만 수정 요청 시 테스트 본문·구현 본문을 임의로 채우지 말 것.
+
+## 디렉터리 (Harness)
+```
+src/{entity,control,boundary}/
+tests/{entity,control,boundary}/
+```
