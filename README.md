@@ -37,6 +37,7 @@ GUI·LMS·웹은 **Out of Scope** ([PRD §2.2](docs/PRD.md)).
 | 문서 | 내용 |
 |------|------|
 | [`docs/PRD.md`](docs/PRD.md) | FR · AC · 테스트 · 범위 **단일 기준** |
+| [`docs/TODO-RED.md`](docs/TODO-RED.md) | RED 단계 Test ID · Given/Then · 상세 SSOT |
 | [`Report/01.MagicSquare_ProblemDefinition_Report.md`](Report/01.MagicSquare_ProblemDefinition_Report.md) | Mom Test 문제 정의 · 추적성 |
 
 ---
@@ -51,33 +52,73 @@ GUI·LMS·웹은 **Out of Scope** ([PRD §2.2](docs/PRD.md)).
 
 ---
 
-## 프로젝트 구조 (예정)
+## 프로젝트 구조
 
 ```text
-src/magicsquare/
-  boundary/
-  domain/          # validate_ten_lines (FR-04)
-  control/
-  entity/
-tests/
-  boundary/
-  domain/
-  e2e/
+pyproject.toml
+src/{entity,control,boundary}/
+tests/{entity,control,boundary}/
 Report/
 docs/
 ```
 
 ---
 
+## RED 단계 체크리스트
+
+상세 Given/Then·오류 코드는 [`docs/TODO-RED.md`](docs/TODO-RED.md) 참고.  
+**완료 기준:** 각 Test ID에 `pytest` **FAIL** (`src/` 수정 없이 `tests/`만). Fixture: **G0**(완전 격자), **G1**(빈칸 `(2,2)`, `(3,3)` · 누락 `{7,10}`).
+
+### 공통
+
+- [ ] `tests/conftest.py`에 **G0**, **G1** fixture 정의
+- [ ] 각 테스트 docstring에 **Test ID** (`U-*` / `D-*`) 명시
+- [ ] RED 후 `python -m pytest <대상> -q` → **FAIL** 로그 보관
+- [ ] `INVALID_NULL` vs Report **E003** — 필요 시 PRD·Report SSOT 정합
+
+### Track A — Boundary (`tests/boundary/test_u_*.py`)
+
+- [ ] **U-IN-01** — `grid=None` → `E003` / `INVALID_NULL`
+- [ ] **U-IN-02** — `grid=3×4` → `E001` / `INVALID_SIZE`
+- [ ] **U-IN-03** — 빈칸 0개 → `E002` / `INVALID_BLANKS` (PRD: `INVALID_ZERO_COUNT`)
+- [ ] **U-OUT-01** — 유효 입력 **G1** → `len(result)==6`
+- [ ] **U-FLOW-02** — `grid=None` → `execute()` **0회** (Domain 미호출)
+
+### Track B — Logic (`tests/entity/`, `tests/control/` · `test_d_*.py`)
+
+**FR-02~05 · 솔버**
+
+- [ ] **D-LOC-01** — `find_blank_coords()` · G1 → `[(2,2),(3,3)]` (I6)
+- [ ] **D-MIS-01** — `find_not_exist_nums()` · G1 → `[7, 10]` (I7, I11)
+- [ ] **D-VAL-01** — `is_magic_square()` · G0 → `True` (I1~I5)
+- [ ] **D-SOL-01** — `solution()` · G1 Step A 성공 (I8)
+
+**FR-04 · 10선 판정** (`validate_ten_lines` — RED 우선)
+
+- [ ] **D-04-02** — 행·열만 34, 부대각 `/` ≠ 34 → `False` (**RED 우선**)
+- [ ] **D-04-03** — 주대각만 검사와 동치 거부 (SC-1)
+
+**FR-04 · GREEN 대기** (RED 이후)
+
+- [ ] **D-04-01** — 10선 모두 34 → `True`
+- [ ] **D-04-04** — 동일 격자 2회 → 동일 결과
+
+---
+
 ## 시작하기
 
-> 코드·`pyproject.toml`은 아직 없습니다. FR-04 Domain Test Loop부터 추가할 예정입니다.
+Harness(`pyproject.toml`, ECB `src/`·`tests/` 골격)는 준비됨. **테스트 본문은 미작성.**
 
-구현 시 권장 순서 ([PRD §8.3](docs/PRD.md)):
+TDD 순서 ([PRD §8.3](docs/PRD.md)):
 
-1. **RED** — 행·열만 맞고 대각선 틀린 격자가 통과하면 실패하는 테스트
+1. **RED** — 위 체크리스트 (`D-04-02` 우선)
 2. **GREEN** — 10선 각각 합 34 검사
 3. **REFACTOR** — 선 좌표 enumerate 추출 (behavior 불변)
+
+```powershell
+pip install -e ".[dev]"
+python -m pytest tests/entity/test_d_04_02.py -q
+```
 
 ---
 
