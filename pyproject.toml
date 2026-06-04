@@ -1,7 +1,7 @@
 [project]
-name = "magicsquare-1004"
+name = "magicsquare-xx"
 version = "0.1.0"
-description = "MagicSquare 4×4 (MagicSquare_1004) — ECB + Dual-Track TDD"
+description = "MagicSquare 4×4 (MagicSquare_xx) — ECB + Dual-Track TDD"
 requires-python = ">=3.10"
 dependencies = []
 

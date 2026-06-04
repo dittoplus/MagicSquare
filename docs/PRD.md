@@ -2,7 +2,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| 프로젝트 | MagicSquare_1004 |
+| 프로젝트 | MagicSquare_xx |
 | 작성일 | 2026-06-04 |
 | 근거 | [Report/01.MagicSquare_ProblemDefinition_Report.md](../Report/01.MagicSquare_ProblemDefinition_Report.md) |
 | 상태 | **초안** — Mom Test 문제 정의에서 파생 |

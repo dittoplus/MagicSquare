@@ -1,4 +1,4 @@
-# MagicSquare 4×4 (MagicSquare_1004)
+# MagicSquare 4×4 (MagicSquare_xx)
 
 부분적으로 비어 있는 **4×4 Magic Square**(빈칸 2개, `0` / `1..16`, **10개 선 합 34**)를 다루는 **Python TDD** 학습 프로젝트입니다.
 

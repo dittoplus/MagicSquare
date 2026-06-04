@@ -1,7 +1,7 @@
-# MagicSquare_1004 — Cursor Rules (초안)
+# MagicSquare_xx — Cursor Rules (초안)
 
 ## 프로젝트
-4×4 부분 마방진(MagicSquare_1004). 단일 기준: `docs/PRD.md`, 문제 정의: `Report/01`, `Report/02`.
+4×4 부분 마방진(MagicSquare_xx). 단일 기준: `docs/PRD.md`, 문제 정의: `Report/01`, `Report/02`.
 Python + pytest, ECB + Dual-Track TDD.
 
 ## 도메인 (불변)
