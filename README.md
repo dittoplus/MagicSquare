@@ -88,7 +88,7 @@ docs/
 
 **FR-02~05 · 솔버**
 
-- [ ] **D-LOC-01** — `find_blank_coords()` · G1 → `[(2,2),(3,3)]` (I6)
+- [x] **D-LOC-01** — `find_blank_coords()` · G1 → `[(2,2),(3,3)]` (I6) · **GREEN**
 - [ ] **D-MIS-01** — `find_not_exist_nums()` · G1 → `[7, 10]` (I7, I11)
 - [ ] **D-VAL-01** — `is_magic_square()` · G0 → `True` (I1~I5)
 - [ ] **D-SOL-01** — `solution()` · G1 Step A 성공 (I8)

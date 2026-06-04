@@ -55,9 +55,9 @@
 
 ### FR-02~03·05 (솔버·좌표·누락 수)
 
-- [ ] **D-LOC-01** — `find_blank_coords()` · **G1** → `[(2,2),(3,3)]`
+- [x] **D-LOC-01** — `find_blank_coords()` · **G1** → `[(2,2),(3,3)]` · **GREEN PASS** (Golden Master G1)
   - Invariant: **I6** row-major
-  - Expected RED: `ImportError` / `AssertionError`
+  - ~~Expected RED: `ImportError` / `AssertionError`~~
 - [ ] **D-MIS-01** — `find_not_exist_nums()` · **G1** → `[7, 10]` 오름차순
   - Invariant: **I7**, **I11**
   - Expected RED: `ImportError` / `AssertionError`
@@ -88,7 +88,7 @@
 
 ## 공통 작업 (RED 착수 전·후)
 
-- [ ] `tests/conftest.py`에 **G0**, **G1** fixture 정의
+- [x] `tests/conftest.py`에 **G1** fixture 정의 *(G0: 후속)*
 - [ ] 각 테스트 함수 docstring에 **Test ID** (`U-*` / `D-*`) 명시
 - [ ] RED 완료 후 `python -m pytest <대상 파일> -q` → **FAIL** 로그 보관
 - [ ] Boundary 오류 `INVALID_NULL` vs Report **E003**(`INVALID_ZERO_COUNT`) — 필요 시 PRD·Report SSOT 정합
